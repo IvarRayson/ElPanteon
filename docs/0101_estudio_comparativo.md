@@ -1,0 +1,15 @@
+A1.1 Estudio comparativo de tecnologías móviles
+
+| Aspectos                            | 1.Android Nativo (Kotlin)                                                                             | 2.Flutter                                                                                      | 3.PWA                                                                                                                                      |
+|-------------------------------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| Lenguaje y herramientas             | Kotlin / Java. Android Studio, Gradle, SDK Android.                                                   | Dart. Flutter SDK, Android Studio / VS Code.                                                   | JavaScript / TypeScript. Cualquier editor, Service Workers y Manifest.json.                                                                |
+| Plataformas                         | Solo Android.                                                                                         | Android, iOS, Web, Windows, macOS, Linux desde un mismo código.                                | Cualquier dispositivo con navegador moderno.                                                                                               |
+| Rendimiento y hardware              | Acceso 100% a API, sensores, Bluetooth, NFC, cámara, sujeto a permisos y capacidades del dispositivo. | Compila a código nativo en las plataformas móviles compatibles. Acceso a hardware vía plugins. | Rendimiento depende del navegador. Acceso a hardware muy restringido: no NFC, Bluetooth limitado, sin acceso total al sistema de archivos. |
+| Coste de desarrollo y mantenimiento | Alto. Necesitas equipo separado si quieres iOS. Dos apps = doble coste.                               | Medio-bajo. Un equipo, un código, para varias plataformas. Mantenimiento muy rentable.         | Muy bajo. Desarrollo web rápido, sin pasar por Play Store/tienda . Mantenimiento mínimo.                                                   |
+| Distribución                        | Google Play Store.                                                                                    | Google Play + App Store.                                                                       | URL directa, sin necesidad de tiendas. Instalable desde el navegador.                                                                      |
+
+Caso real: *App bancaria, Necesitas seguridad a nivel de sistema, encriptación con Keystore, NFC para pagos.
+
+> Para proyectos exigentes y máxima optimización para Android -> *Nativo Kotlin*
+
+> Para la mayoría de proyectos de pymes, Flutter es la mejor entre coste, rendimiento y alcance.
