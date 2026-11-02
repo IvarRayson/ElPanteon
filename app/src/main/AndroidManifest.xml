@@ -25,6 +25,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".GlosarioActivity"/>
+        <activity
+            android:name=".TarjetaDiosActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

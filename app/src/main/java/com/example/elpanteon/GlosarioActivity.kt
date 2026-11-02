@@ -33,7 +33,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.res.painterResource
-
+import androidx.compose.ui.platform.LocalContext
 
 class GlosarioActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +58,7 @@ class GlosarioActivity : ComponentActivity() {
 
 @Composable
 fun CatalogoOfGods(dioses: List<Dios>) {
-
+    val context = LocalContext.current
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
@@ -86,6 +86,12 @@ fun CatalogoOfGods(dioses: List<Dios>) {
 
                     Card(
                         modifier = Modifier.clickable {
+                            val intent = android.content.Intent(
+                                context,
+                                TarjetaDiosActivity::class.java
+                            )
+                            intent.putExtra("DIOS_ID", dios.id)
+                            context.startActivity(intent)
                         }
                     ) {
                         Column {
