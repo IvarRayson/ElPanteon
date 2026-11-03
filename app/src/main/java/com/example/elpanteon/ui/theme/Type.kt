@@ -6,6 +6,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
+import androidx.compose.ui.text.font.Font
+import com.example.elpanteon.R
+
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
@@ -31,4 +34,19 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+
+val cormorantGaramond = FontFamily(
+    Font(
+        R.font.cormorant_garamond_regular,
+        FontWeight.Normal
+    ),
+    Font(
+        R.font.cormorant_garamond_bold,
+        FontWeight.Bold
+    ),
+    Font(
+    R.font.cormorant_garamond_semibold,
+        FontWeight.SemiBold
+    )
 )

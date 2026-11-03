@@ -22,6 +22,7 @@ import com.example.elpanteon.data.AppDatabase
 import com.example.elpanteon.data.Dios
 import com.example.elpanteon.data.Mito
 import com.example.elpanteon.ui.theme.ElPanteonTheme
+import com.example.elpanteon.ui.theme.cormorantGaramond
 
 class TarjetaDiosActivity : ComponentActivity() {
 
@@ -215,9 +216,11 @@ fun TarjetaDios(
                 // 8. Nota
                 if (!dios.nota.isNullOrBlank()) {
                     Text(
-                        text = "Nota",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
+                        text = "Curiosidades",
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontFamily = cormorantGaramond,
+                            fontWeight = FontWeight.Bold
+                        )
                     )
 
                     Text(

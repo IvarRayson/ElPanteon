@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.elpanteon.data.AppDatabase
+import com.example.elpanteon.data.DatosIniciales
 import com.example.elpanteon.data.Dios
 import com.example.elpanteon.ui.theme.ElPanteonTheme
 
@@ -48,10 +49,10 @@ class MainActivity : ComponentActivity() {
                 }
 
                 LaunchedEffect(Unit) {
-                    dioses = AppDatabase
-                        .obtenerBaseDatos(applicationContext)
-                        .diosDao()
-                        .obtenerTodos()
+                    val database = AppDatabase.obtenerBaseDatos(applicationContext)
+                    DatosIniciales.insertarDioses(database)
+
+                    dioses = database.diosDao().obtenerTodos()
 
                     cargando = false
                 }
@@ -284,7 +285,15 @@ fun PantallaInicio(
                         text = "Glosario",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(vertical = 8.dp)
+                        modifier = Modifier
+                            .padding(vertical = 8.dp)
+                            .clickable{
+                                val intent = android.content.Intent(
+                                    context,
+                                    GlosarioActivity::class.java
+                                )
+                                context.startActivity(intent)
+                            }
                     )
                 }
 
@@ -347,11 +356,6 @@ fun PantallaInicio(
                                     Text(
                                         text = dios.atributo,
                                         style = MaterialTheme.typography.bodyMedium
-                                    )
-
-                                    Text(
-                                        text = dios.reino,
-                                        style = MaterialTheme.typography.bodySmall
                                     )
                                 }
                             }

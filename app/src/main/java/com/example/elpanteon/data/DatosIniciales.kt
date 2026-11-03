@@ -1,5 +1,6 @@
 package com.example.elpanteon.data
 
+import androidx.room.withTransaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -7,9 +8,8 @@ object DatosIniciales {
 
     suspend fun insertarDioses(database: AppDatabase) {
         withContext(Dispatchers.IO) {
-            val dao = database.diosDao()
 
-            if (dao.obtenerTodos().isEmpty()) {
+            database.withTransaction {
                 val glosario = listOf(
                     Dios(nombre = "Odín", atributo = "Sabiduría y guerra", reino = "Asgard", nota = "Padre de todos", imagen = "https://i.pinimg.com/736x/cb/b1/73/cbb1730da1454fa945dd634b0745b79b.jpg"),
                     Dios(nombre = "Frigg", atributo = "Matrimonio y profecía", reino = "Asgard", nota = "Madre de todos", imagen = "https://i.pinimg.com/736x/78/48/6c/78486c7d78a0f2c4c4a4a7c5e7c01464.jpg"),
@@ -25,7 +25,21 @@ object DatosIniciales {
                     Dios(nombre = "Skaði", atributo = "Invierno y caza", reino = "Jötunheimr - Þrymheimr", nota = "nombre de Escandinavia `Tierra de Skaði´", imagen = "https://i.pinimg.com/736x/d3/fe/42/d3fe422100f7ee37af8a94b487c712b0.jpg"),
                     Dios(nombre = "Ull", atributo = "Tiro con arco y esquí", reino = "Asgard", nota = "Reina en las nieves", imagen = "https://i.pinimg.com/736x/ad/1f/47/ad1f474195fafbbb430036002b818f06.jpg")
                 )
-                glosario.forEach { dao.insertar(it) }
+
+                val dao = database.diosDao()
+                val diosesExistentes = dao.obtenerTodos()
+
+                val nombresExistentes = diosesExistentes
+                    .map{ it.nombre}
+                    .toSet()
+
+                val diosesNuevos = glosario.filter{
+                    it.nombre !in nombresExistentes
+                }
+
+                diosesNuevos.forEach{
+                    dao.insertar(it)
+                }
             }
         }
     }
