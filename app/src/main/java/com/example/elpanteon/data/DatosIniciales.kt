@@ -11,7 +11,7 @@ object DatosIniciales {
 
             database.withTransaction {
                 val glosario = listOf(
-                    Dios(nombre = "Odín", atributo = "Sabiduría y guerra", reino = "Asgard", nota = "Padre de todos", imagen = "https://i.pinimg.com/736x/cb/b1/73/cbb1730da1454fa945dd634b0745b79b.jpg"),
+                    Dios(nombre = "Odín", atributo = "Sabiduría y guerra", reino = "Asgard", nota = "Padre de todos", imagen = "https://i.pinimg.com/736x/96/ba/e6/96bae6fa5a51a0b103dec1b3f8ff39a7.jpg"),
                     Dios(nombre = "Frigg", atributo = "Matrimonio y profecía", reino = "Asgard", nota = "Madre de todos", imagen = "https://i.pinimg.com/736x/78/48/6c/78486c7d78a0f2c4c4a4a7c5e7c01464.jpg"),
                     Dios(nombre = "Thor", atributo = "Trueno y fuerza", reino = "Asgard", nota = "Dios del trueno", imagen = "https://i.pinimg.com/736x/c6/c9/15/c6c9159c7197f644f73d373d8b769254.jpg"),
                     Dios(nombre = "Sif", atributo = "Fertilidad y cosechas", reino = "Asgard", nota = "Esposa de Thor", imagen = "https://i.pinimg.com/736x/aa/bc/22/aabc224e5d9c4908ad5edc4edfea98e5.jpg"),
@@ -40,7 +40,21 @@ object DatosIniciales {
                 diosesNuevos.forEach{
                     dao.insertar(it)
                 }
+
+                actualizarImagenesIniciales(dao, glosario)
             }
+        }
+    }
+
+    private suspend fun actualizarImagenesIniciales(
+        dao: DiosDao,
+        glosario: List<Dios>
+    ) {
+        glosario.forEach { dios ->
+            dao.actualizarImagen(
+                nombre = dios.nombre,
+                nuevaUrl = dios.imagen.orEmpty()
+            )
         }
     }
 }

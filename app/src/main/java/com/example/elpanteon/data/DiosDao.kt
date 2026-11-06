@@ -18,6 +18,10 @@ interface DiosDao {
     @Query("SELECT * FROM dioses WHERE id = :id")
     suspend fun obtenerPorId(id: Int): Dios?
 
+    @Query("""UPDATE dioses SET imagen = :nuevaUrl
+    			WHERE nombre = :nombre AND imagen != :nuevaUrl""")
+    suspend fun actualizarImagen(nombre: String, nuevaUrl: String)
+
     @Delete
     suspend fun eliminar(dios: Dios)
 }
