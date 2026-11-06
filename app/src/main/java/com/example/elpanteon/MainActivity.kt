@@ -19,18 +19,23 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.elpanteon.data.AppDatabase
 import com.example.elpanteon.data.DatosIniciales
 import com.example.elpanteon.data.Dios
 import com.example.elpanteon.ui.theme.ElPanteonTheme
+import com.example.elpanteon.ui.theme.germaniaOne
+import com.example.elpanteon.ui.theme.pirataOne
+import com.example.elpanteon.ui.theme.unifrakturCook
 
 class MainActivity : ComponentActivity() {
 
@@ -97,7 +102,10 @@ fun PantallaInicio(
                 title = {
                     Text(
                         text = "El Panteón",
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            fontFamily = pirataOne,
+                            fontSize = 32.sp
+                        )
                     )
                 }
             )
@@ -174,22 +182,39 @@ fun PantallaInicio(
         ) {
 
             // 2. Sección Yggdrasil
-            TextButton(
-                onClick = {
-                    Toast.makeText(
-                        context,
-                        "Exploración de Yggdrasil próximamente",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                },
-                modifier = Modifier.padding(start = 8.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
+
+                TextButton(
+                    onClick = {
+                        Toast.makeText(
+                            context,
+                            "Exploración de Yggdrasil próximamente",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    },
+                ) {
+                    Text(
+                        text = "Yggdrasil  >",
+                        fontSize = 22.sp,
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontFamily = unifrakturCook
+                        ),
+                        color = Color(0xFF006A4E)
+                    )
+                }
+
                 Text(
-                    text = "Yggdrasil",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
+                    text = "LOS NUEVE MUNDOS",
+                    fontSize = 10.sp,
+                    letterSpacing = 0.18.em,
+                    color = Color(0xFF8A8173)
                 )
             }
+
+
 
             LazyRow(
                 modifier = Modifier
@@ -209,24 +234,31 @@ fun PantallaInicio(
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            AsyncImage(
-                                model = dios.imagen,
-                                contentDescription = dios.reino,
-                                contentScale = ContentScale.Crop,
-                                placeholder = painterResource(R.drawable.alternativa),
-                                error = painterResource(R.drawable.alternativa_b_n),
-                                fallback = painterResource(R.drawable.biograma),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f)
-                            )
 
-                            Text(
-                                text = dios.reino,
-                                fontWeight = FontWeight.Bold,
-                                style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.padding(6.dp)
-                            )
+                            Box(
+                                modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                            ) {
+                                AsyncImage(
+                                    model = dios.imagen,
+                                    contentDescription = dios.reino,
+                                    contentScale = ContentScale.Crop,
+                                    placeholder = painterResource(R.drawable.alternativa),
+                                    error = painterResource(R.drawable.alternativa_b_n),
+                                    fallback = painterResource(R.drawable.biograma),
+                                )
+
+                                Text(
+                                    text = dios.reino,
+                                    fontSize = 18.sp,
+                                    style = MaterialTheme.typography.bodySmall.copy(
+                                        fontFamily = germaniaOne
+                                    ),
+                                    modifier = Modifier.align(Alignment.BottomCenter).padding(6.dp),
+                                    color = Color(0xFFFFFFFF)
+                                )
+                            }
                         }
                     }
                 }
@@ -256,9 +288,9 @@ fun PantallaInicio(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp)
+                    .padding(PaddingValues(12.dp, 0.dp, 12.dp, 8.dp))
             ) {
-                diosesFiltrados.take(5).forEach { dios ->
+                diosesFiltrados.take(4).forEach { dios ->
                     ListItem(
                         headlineContent = {
                             Text(dios.nombre)
@@ -274,27 +306,42 @@ fun PantallaInicio(
             // 4. Glosario y tarjetas
             LazyColumn(
                 state = listaEstado,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxWidth()
+                    .height(98.dp + 110.dp * 3),
                 contentPadding = PaddingValues(12.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
 
                 // Cabecero dentro de la lista desplazable
                 item {
-                    Text(
-                        text = "Glosario",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .padding(vertical = 8.dp)
-                            .clickable{
-                                val intent = android.content.Intent(
-                                    context,
-                                    GlosarioActivity::class.java
-                                )
-                                context.startActivity(intent)
-                            }
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Glosario",
+                            style = MaterialTheme.typography.headlineMedium.copy(
+                                fontFamily = unifrakturCook
+                            ),
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .clickable{
+                                    val intent = android.content.Intent(
+                                        context,
+                                        GlosarioActivity::class.java
+                                    )
+                                    context.startActivity(intent)
+                                },
+                            color = Color(0xFF006A4E)
+                        )
+
+                        Text(
+                            text = "ARCHIVO DE LEYENDAS",
+                            fontSize = 10.sp,
+                            letterSpacing = 0.18.em,
+                            color = Color(0xFF8A8173)
+                        )
+                    }
                 }
 
                 if (cargando) {
@@ -345,7 +392,8 @@ fun PantallaInicio(
                                 )
 
                                 Column(
-                                    modifier = Modifier.padding(12.dp)
+                                    modifier = Modifier.padding(12.dp),
+                                    Arrangement.spacedBy(12.dp)
                                 ) {
                                     Text(
                                         text = dios.nombre,
@@ -355,7 +403,8 @@ fun PantallaInicio(
 
                                     Text(
                                         text = dios.atributo,
-                                        style = MaterialTheme.typography.bodyMedium
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = Color(0xFF8A8173)
                                     )
                                 }
                             }

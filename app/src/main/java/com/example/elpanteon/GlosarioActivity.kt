@@ -107,7 +107,7 @@ fun CatalogoOfGods(dioses: List<Dios>) {
                                 fallback = painterResource(R.drawable.biograma),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(140.dp)
+                                    .height(140.dp) //altura img
                             )
 
                             Text(

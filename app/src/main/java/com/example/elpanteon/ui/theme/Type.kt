@@ -5,7 +5,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-
 import androidx.compose.ui.text.font.Font
 import com.example.elpanteon.R
 
@@ -36,17 +35,24 @@ val Typography = Typography(
     */
 )
 
+// Cormorant Garamond
 val cormorantGaramond = FontFamily(
-    Font(
-        R.font.cormorant_garamond_regular,
-        FontWeight.Normal
-    ),
-    Font(
-        R.font.cormorant_garamond_bold,
-        FontWeight.Bold
-    ),
-    Font(
-    R.font.cormorant_garamond_semibold,
-        FontWeight.SemiBold
-    )
+    Font(R.font.cormorant_garamond_regular, FontWeight.Normal),
+    Font(R.font.cormorant_garamond_bold, FontWeight.Bold),
+    Font(R.font.cormorant_garamond_semibold, FontWeight.SemiBold)
+)
+
+// Germania One
+val germaniaOne = FontFamily(
+    Font(R.font.germania_one_regular, FontWeight.Normal)
+)
+
+// Pirata One
+val pirataOne = FontFamily(
+    Font(R.font.pirata_one_regular, FontWeight.Normal)
+)
+
+// UnifrakturCook
+val unifrakturCook = FontFamily(
+    Font(R.font.unifraktur_cook_bold, FontWeight.Bold)
 )
