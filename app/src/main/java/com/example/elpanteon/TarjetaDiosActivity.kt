@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
@@ -145,14 +146,15 @@ fun TarjetaDios(
             // 5. Column: organiza las secciones
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
 
                 // 6. Historia y leyendas
                 Text(
                     text = "Historia y leyendas",
                     style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 if (mitos.isEmpty()) {
@@ -167,7 +169,7 @@ fun TarjetaDios(
 
                         Text(
                             text = mito.historia,
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.bodyLarge
                         )
                     }
                 }
@@ -176,15 +178,30 @@ fun TarjetaDios(
                 Text(
                     text = "Reino: ${dios.reino}",
                     style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.SemiBold
                 )
 
                 // 7. Row: atributos
-                Text(
-                    text = "Atributos",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    HorizontalDivider(
+                        modifier = Modifier.weight(1f),
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant
+                    )
+                    Text(
+                        text = "Atributos",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.weight(1f),
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant
+                    )
+                }
 
                 val atributos = dios.atributo
                     .split(Regex("\\s+y\\s+|,"))
@@ -200,7 +217,7 @@ fun TarjetaDios(
                     atributos.forEach { atributo ->
                         Surface(
                             shape = RoundedCornerShape(20.dp),
-                            color = MaterialTheme.colorScheme.secondaryContainer
+                            color = Color(0xFF87BEAF)
                         ) {
                             Text(
                                 text = atributo,
@@ -216,18 +233,32 @@ fun TarjetaDios(
 
                 // 8. Nota
                 if (!dios.nota.isNullOrBlank()) {
-                    Text(
-                        text = "Curiosidades",
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontFamily = cormorantGaramond,
-                            fontWeight = FontWeight.Bold
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        HorizontalDivider(
+                            modifier = Modifier.weight(1f),
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.outlineVariant
                         )
-                    )
+
+                        Text(
+                            text = "Curiosidades",
+                            style = MaterialTheme.typography.titleLarge
+                        )
+
+                        HorizontalDivider(
+                            modifier = Modifier.weight(1f),
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.outlineVariant
+                        )
+                    }
 
                     Text(
                         text = dios.nota,
                         style = MaterialTheme.typography.bodyLarge.copy(
-                            fontSize = 20.sp,
                             lineHeight = 28.sp
                         )
                     )

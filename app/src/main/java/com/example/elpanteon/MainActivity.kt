@@ -102,10 +102,10 @@ fun PantallaInicio(
                 title = {
                     Text(
                         text = "El Panteón",
-                        style = MaterialTheme.typography.headlineSmall.copy(
+                        style = MaterialTheme.typography.headlineLarge.copy(
                             fontFamily = pirataOne,
-                            fontSize = 32.sp
-                        )
+                        ),
+                        color = Color(0xFF000000)
                     )
                 }
             )
@@ -198,17 +198,16 @@ fun PantallaInicio(
                 ) {
                     Text(
                         text = "Yggdrasil  >",
-                        fontSize = 22.sp,
-                        style = MaterialTheme.typography.headlineMedium.copy(
+                        style = MaterialTheme.typography.headlineLarge.copy(
                             fontFamily = unifrakturCook
                         ),
-                        color = Color(0xFF006A4E)
+                        color = Color(0xFF4D9C87)
                     )
                 }
 
                 Text(
                     text = "LOS NUEVE MUNDOS",
-                    fontSize = 10.sp,
+                    fontSize = 11.sp,
                     letterSpacing = 0.18.em,
                     color = Color(0xFF8A8173)
                 )
@@ -252,7 +251,7 @@ fun PantallaInicio(
                                 Text(
                                     text = dios.reino,
                                     fontSize = 18.sp,
-                                    style = MaterialTheme.typography.bodySmall.copy(
+                                    style = MaterialTheme.typography.titleMedium.copy(
                                         fontFamily = germaniaOne
                                     ),
                                     modifier = Modifier.align(Alignment.BottomCenter).padding(6.dp),
@@ -320,7 +319,7 @@ fun PantallaInicio(
                     ) {
                         Text(
                             text = "Glosario",
-                            style = MaterialTheme.typography.headlineMedium.copy(
+                            style = MaterialTheme.typography.headlineLarge.copy(
                                 fontFamily = unifrakturCook
                             ),
                             modifier = Modifier
@@ -332,12 +331,12 @@ fun PantallaInicio(
                                     )
                                     context.startActivity(intent)
                                 },
-                            color = Color(0xFF006A4E)
+                            color = Color(0xFF333333)
                         )
 
                         Text(
                             text = "ARCHIVO DE LEYENDAS",
-                            fontSize = 10.sp,
+                            fontSize = 11.sp,
                             letterSpacing = 0.18.em,
                             color = Color(0xFF8A8173)
                         )
@@ -370,7 +369,10 @@ fun PantallaInicio(
                                     intent.putExtra("DIOS_ID", dios.id)
                                     context.startActivity(intent)
                                 },
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color(0xFF8A8173)
+                            )
                         ) {
                             Row(
                                 modifier = Modifier
@@ -398,13 +400,14 @@ fun PantallaInicio(
                                     Text(
                                         text = dios.nombre,
                                         fontWeight = FontWeight.Bold,
-                                        style = MaterialTheme.typography.titleMedium
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = Color(0xFFFFFFFF)
                                     )
 
                                     Text(
                                         text = dios.atributo,
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = Color(0xFF8A8173)
+                                        color = Color(0xFFFFFFFF)
                                     )
                                 }
                             }

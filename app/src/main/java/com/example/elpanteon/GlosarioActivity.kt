@@ -32,8 +32,15 @@ import com.example.elpanteon.ui.theme.ElPanteonTheme
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.CardDefaults
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
+import com.example.elpanteon.ui.theme.germaniaOne
+import com.example.elpanteon.ui.theme.pirataOne
+import com.example.elpanteon.ui.theme.unifrakturCook
 
 class GlosarioActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +77,15 @@ fun CatalogoOfGods(dioses: List<Dios>) {
         ) {
             Text(
                 text = "Glosario de dioses",
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.displayMedium.copy(
+                    fontFamily = germaniaOne
+                ),
+                textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                color = Color(0xFF333333)
             )
 
             LazyVerticalGrid(
@@ -92,7 +105,10 @@ fun CatalogoOfGods(dioses: List<Dios>) {
                             )
                             intent.putExtra("DIOS_ID", dios.id)
                             context.startActivity(intent)
-                        }
+                        },
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color(0xFF8A8173)
+                        )
                     ) {
                         Column {
                             AsyncImage(
@@ -112,8 +128,11 @@ fun CatalogoOfGods(dioses: List<Dios>) {
 
                             Text(
                                 text = dios.nombre,
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.padding(16.dp)
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontFamily = pirataOne
+                                ),
+                                modifier = Modifier.padding(16.dp),
+                                color = Color(0xFFFFFFFF)
                             )
                         }
                     }
