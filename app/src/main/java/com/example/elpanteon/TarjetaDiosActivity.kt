@@ -24,7 +24,8 @@ import com.example.elpanteon.data.AppDatabase
 import com.example.elpanteon.data.Dios
 import com.example.elpanteon.data.Mito
 import com.example.elpanteon.ui.theme.ElPanteonTheme
-import com.example.elpanteon.ui.theme.cormorantGaramond
+import com.example.elpanteon.data.Favorito
+import kotlinx.coroutines.launch
 
 class TarjetaDiosActivity : ComponentActivity() {
 
@@ -40,12 +41,37 @@ class TarjetaDiosActivity : ComponentActivity() {
                 var mitos by remember { mutableStateOf<List<Mito>>(emptyList()) }
                 var cargando by remember { mutableStateOf(true) }
 
+                // Acceso a tabla favoritos
+                var diosFavorito by remember { mutableStateOf(false) }
+                var mitosFavoritos by remember { mutableStateOf<Set<Int>>(emptySet()) }
+
+                val coroutineScope = rememberCoroutineScope()
+
+                val database = AppDatabase.obtenerBaseDatos(applicationContext)
+                val favoritoDao = database.favoritoDao()
+
                 LaunchedEffect(diosId) {
                     if (diosId != -1) {
                         val database = AppDatabase.obtenerBaseDatos(applicationContext)
 
                         dios = database.diosDao().obtenerPorId(diosId)
                         mitos = database.mitoDao().obtenerPorDios(diosId)
+
+                        // Comprobacion, dios es favorito
+                        diosFavorito = favoritoDao.esFavorito(
+                            Favorito.TIPO_DIOS,
+                            diosId
+                        )
+                        // Recuperar mitos favoritos
+                        mitosFavoritos = mitos
+                            .filter {
+                                favoritoDao.esFavorito(
+                                    Favorito.TIPO_MITO,
+                                    it.id
+                                )
+                            }
+                            .map{it.id}
+                            .toSet()
                     }
                     cargando = false
                 }
@@ -64,6 +90,47 @@ class TarjetaDiosActivity : ComponentActivity() {
                         TarjetaDios(
                             dios = dios!!,
                             mitos = mitos,
+                            diosFavorito = diosFavorito,
+                            mitosFavoritos = mitosFavoritos,
+
+                            // Conectar interfaz con Room
+                            onToggleDiosFavorito = {
+                                coroutineScope.launch {
+                                    if (diosFavorito) {
+                                        favoritoDao.eliminar(
+                                            Favorito.TIPO_DIOS,
+                                            diosId
+                                        )
+                                    } else {
+                                        favoritoDao.insertar(
+                                            Favorito(Favorito.TIPO_DIOS, diosId)
+                                        )
+                                    }
+
+                                    diosFavorito = !diosFavorito
+                                }
+                            },
+
+                            onToggleMitoFavorito = { mito ->
+                                coroutineScope.launch {
+                                    if (mitosFavoritos.contains(mito.id)) {
+                                        favoritoDao.eliminar(
+                                            Favorito.TIPO_MITO,
+                                            mito.id
+                                        )
+
+                                        mitosFavoritos = mitosFavoritos - mito.id
+
+                                    } else {
+                                        favoritoDao.insertar(
+                                            Favorito(Favorito.TIPO_MITO, mito.id)
+                                        )
+
+                                        mitosFavoritos = mitosFavoritos + mito.id
+                                    }
+                                }
+                            },
+
                             volver = { finish() }
                         )
                     }
@@ -92,10 +159,12 @@ class TarjetaDiosActivity : ComponentActivity() {
 fun TarjetaDios(
     dios: Dios,
     mitos: List<Mito>,
+    diosFavorito: Boolean,
+    mitosFavoritos: Set<Int>,
+    onToggleDiosFavorito: () -> Unit,
+    onToggleMitoFavorito: (Mito) -> Unit,
     volver: () -> Unit
 ) {
-    var favorito by remember { mutableStateOf(false) }
-
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
@@ -111,7 +180,7 @@ fun TarjetaDios(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(750.dp)
+                    .height(600.dp)
             ) {
 
                 AsyncImage(
@@ -126,12 +195,12 @@ fun TarjetaDios(
 
                 // Botón superpuesto para marcar como favorito
                 Button(
-                    onClick = { favorito = !favorito },
+                    onClick = onToggleDiosFavorito,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(16.dp)
                 ) {
-                    Text(if (favorito) "♥ Favorito" else "♡ Favorito")
+                    Text(if (diosFavorito) "♥ Favorito" else "♡ Favorito")
                 }
             }
 
@@ -161,11 +230,23 @@ fun TarjetaDios(
                     Text("Todavía no hay historias registradas para este dios.")
                 } else {
                     mitos.forEach { mito ->
-                        Text(
-                            text = mito.titulo,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = mito.titulo,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            TextButton(
+                                onClick = { onToggleMitoFavorito(mito) }
+                            ) {
+                                Text(if (mitosFavoritos.contains(mito.id)) "♥" else "♡")
+                            }
+                        }
 
                         Text(
                             text = mito.historia,

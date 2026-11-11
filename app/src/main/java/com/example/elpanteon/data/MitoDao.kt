@@ -26,6 +26,9 @@ interface MitoDao {
     @Query("SELECT * FROM mitos")
     suspend fun obtenerMitosConDios(): List<MitoConDios>
 
+    @Query("SELECT * FROM mitos WHERE id = :mitoId")
+    suspend fun obtenerPorId(mitoId: Int): Mito?
+
     @Delete
     suspend fun eliminar(mito: Mito)
 }

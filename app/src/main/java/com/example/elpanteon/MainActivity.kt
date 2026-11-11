@@ -36,6 +36,7 @@ import com.example.elpanteon.ui.theme.ElPanteonTheme
 import com.example.elpanteon.ui.theme.germaniaOne
 import com.example.elpanteon.ui.theme.pirataOne
 import com.example.elpanteon.ui.theme.unifrakturCook
+import com.example.elpanteon.data.DatosMitosIniciales
 
 class MainActivity : ComponentActivity() {
 
@@ -55,7 +56,9 @@ class MainActivity : ComponentActivity() {
 
                 LaunchedEffect(Unit) {
                     val database = AppDatabase.obtenerBaseDatos(applicationContext)
+
                     DatosIniciales.insertarDioses(database)
+                    DatosMitosIniciales.insertarMitos(database)
 
                     dioses = database.diosDao().obtenerTodos()
 
